@@ -1,19 +1,28 @@
+import java.util.Optional;
+import java.util.OptionalInt;
+
 public class Person {
 
     private final String name;
     private final String surname;
-    private int age = -1;
+    private OptionalInt age;
     private String city = null;
 
-    public Person(String name, String surname, int age, String city) {
+    public Person(String name, String surname, int age) {
         this.name = name;
         this.surname = surname;
-        this.age = age;
+        this.age = OptionalInt.of(age);
+    }
+
+    public Person(String name, String surname, int age, String address) {
+        this.name = name;
+        this.surname = surname;
+        this.age = OptionalInt.of(age);
         this.city = city;
     }
 
     boolean hasAge() {
-        return age >= 0;
+        return  age.isPresent();
     }
 
     boolean hasAddress() {
@@ -25,8 +34,10 @@ public class Person {
     }
 
     public void happyBirthday() {
-        if (age >= 0) {
-            age++;
+        if (hasAge()) {
+            age = OptionalInt.of(age.getAsInt() + 1);
+        } else {
+            System.out.println("Возраст неизвестен");
         }
     }
 
@@ -38,7 +49,7 @@ public class Person {
         return surname;
     }
 
-    public int getAge() {
+    public OptionalInt getAge() {
         return age;
     }
 
@@ -47,7 +58,10 @@ public class Person {
     }
 
     public PersonBuilder newChildBuilder() {
-        return new PersonBuilder().setSurname(surname).setAddress(city);
+        return new PersonBuilder()
+                .setSurname(surname)
+                .setAge(0)
+                .setAddress(city);
     }
 
     @Override
