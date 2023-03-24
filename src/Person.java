@@ -8,6 +8,12 @@ public class Person {
     private OptionalInt age;
     private String city = null;
 
+    public Person(String name, String surname) {
+        this.name = name;
+        this.surname = surname;
+        this.age = OptionalInt.empty();
+    }
+
     public Person(String name, String surname, int age) {
         this.name = name;
         this.surname = surname;
@@ -22,7 +28,7 @@ public class Person {
     }
 
     boolean hasAge() {
-        return  age.isPresent();
+        return age.isPresent();
     }
 
     boolean hasAddress() {
